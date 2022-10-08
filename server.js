@@ -15,13 +15,14 @@ app.get('/', function (req, res) {
 
 io.on('connection', (socket) => {
   socket.on('user join', (payload) => {
+    console.log('socket id:', socket.id);
     this.user = payload;
     console.log('user join', payload);
     socket.broadcast.emit('user join', payload);
   });
 
   socket.on('chat message', (payload) => {
-    // payload.user = this.user;
+    //! line causing problems payload.user = this.user;
     console.log('chat message', payload);
     socket.broadcast.emit('chat message', payload);
   });
