@@ -14,13 +14,21 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on('user join', (payload) => {
+    this.user = payload;
+    console.log('user join', payload);
+    socket.broadcast.emit('user join', payload);
   });
 
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+  socket.on('chat message', (payload) => {
+    // payload.user = this.user;
+    console.log('chat message', payload);
+    socket.broadcast.emit('chat message', payload);
+  });
+
+  socket.on('disconnect', (payload) => {
+    console.log('disconnect', this.user);
+    socket.broadcast.emit('user leave', this.user);
   });
 });
 
