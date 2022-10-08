@@ -5,24 +5,24 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 const app = express();
-const server = http.createServer();
+const server = http.createServer(app);
 const io = new Server(server);
-
-// set the view engine to ejs
-app.set('view engine', 'ejs');
-
-// use res.render to load up an ejs view file
 
 // index page
 app.get('/', function (req, res) {
-  res.render('./chat.ejs');
+  res.sendFile(__dirname + '/src/index.html');
 });
 
 io.on('connection', (socket) => {
-  socket.emit('hello from server');
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 
-  socket.on('hello from client', (payload) => {});
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
 });
 
-app.listen(3000);
+server.listen(3000);
 console.log('Server is listening on port 3000');
