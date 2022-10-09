@@ -31,7 +31,15 @@ io.on('connection', (socket) => {
     console.log('disconnect', this.user);
     socket.broadcast.emit('user leave', this.user);
   });
+  socket.on('typing', (payload) => {
+    console.log(`${payload.user} is typing...`);
+    socket.broadcast.emit('typing', payload);
+  });
 });
 
 server.listen(3000);
 console.log('Server is listening on port 3000');
+
+// log each message to the server
+// hub has a running list of each socket that is online
+//

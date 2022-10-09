@@ -24,29 +24,23 @@
     }
 
     #input {
-      border: none;
       padding: 0 1rem;
       flex-grow: 1;
       border-radius: 2rem;
       margin: 0.25rem;
     }
 
-    #input:focus {
-      outline: none;
-    }
+    #input:focus {}
 
     #form>button {
       background: #333;
-      border: none;
       padding: 0 1rem;
       margin: 0.25rem;
       border-radius: 3px;
-      outline: none;
       color: #fff;
     }
 
     #messages {
-      list-style-type: none;
       margin: 0;
       padding: 0;
     }
@@ -66,10 +60,11 @@
   <form id="form" action="">
     <input id="input" autocomplete="off" /><button>Send</button>
   </form>
+  <p id="typing"></p>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-
+    const typing = document.getElementById('typing')
     const messages = document.getElementById('messages');
     const form = document.getElementById('form');
     const input = document.getElementById('input');
@@ -80,6 +75,7 @@
       item.innerHTML = message;
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
+      typing.innerHTML = '';
     };
 
     form.addEventListener('submit', function (e) {
@@ -91,9 +87,21 @@
         user: user
       });
       input.value = '';
+      typing.innerHTML = '';
       return false;
     }, false);
 
+    input.addEventListener('input', userIsTyping);
+
+    function userIsTyping(e) {
+      if (e.data !== null) {
+        console.log(e);
+        socket.emit('typing', {
+          user: user,
+          message: `${user} is typing...`
+        })
+      }
+    };
 
     socket.on('chat message', payload => {
       addMessage(`${payload.user}: ${payload.message}`);
@@ -106,6 +114,13 @@
     socket.on('user leave', payload => {
       addMessage(`${payload} has left the chat`);
     });
+
+    socket.on('typing', payload => {
+      typing.innerHTML = `${payload.message}`
+      setTimeout(() => {
+        typing.innerHTML = '';
+      }, 10000);
+    })
 
     addMessage(`You have joined the chat as ${user}`);
     socket.emit('user join', user); 
