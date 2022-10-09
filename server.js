@@ -8,6 +8,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const chatLog = [];
+
 // index page
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/src/index.html');
@@ -19,11 +21,13 @@ io.on('connection', (socket) => {
     this.user = payload;
     console.log('user join', payload);
     socket.broadcast.emit('user join', payload);
+    io.to(socket.id).emit('chatlog', chatLog);
   });
 
   socket.on('chat message', (payload) => {
     //! line causing problems payload.user = this.user;
     console.log('chat message', payload);
+    chatLog.push(payload);
     socket.broadcast.emit('chat message', payload);
   });
 
