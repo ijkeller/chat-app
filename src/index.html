@@ -3,7 +3,6 @@
 
 <head>
   <title>Socket.IO chat</title>
-  <!-- <link src="./style.css" type="stylesheet" /> -->
   <style>
     body {
       margin: 0;
@@ -120,6 +119,12 @@
     socket.on('user leave', payload => {
       addMessage(`${payload} has left the chat`);
     });
+
+    socket.on('chatlog', (chatlog) => {
+      for(let i = 0; i < chatlog.length; i++) {
+        addMessage(`${chatlog[i].user}: ${chatlog[i].message}`)
+      }
+    })
 
     socket.on('typing', payload => {
       typing.innerHTML = `${payload.message}`
