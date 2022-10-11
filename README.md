@@ -1,48 +1,40 @@
-# LAB - Class xx
+# LAB - Class 15
 
-## Project: Project Name Here
+## Project: Socket Chat App
 
-### Author: Student/Group Name
-
+### Author: 
+- Isaiah Keller
+- Jack Stubblefield
 ### Problem Domain  
 
-Concise Description of why this app exists
+Anonymous socket chat app
 
 ### Links and Resources
 
-- [ci/cd](http://xyz.com) (GitHub Actions)
-- [back-end server url](http://xyz.com) (when applicable)
-- [front-end application](http://xyz.com) (when applicable)
+- [Github](https://github.com/ijkeller/chat-app)
 
 ### Setup
 
+After cloning from github:
+- within your terminal navigate to the folder created and enter:
+```
+npm i 
+nodemon server.js
+```
+
 #### `.env` requirements (where applicable)
 
-i.e.
-
 - `PORT` - Port Number
-- `DATABASE_URL` - URL to the running Postgres instance/db
 
 #### How to initialize/run your application (where applicable)
 
-- e.g. `npm start`
-
-#### How to use your library (where applicable)
+- `node server.js`
 
 #### Features / Routes
 
-- Feature One: Details of feature
-- GET : `/hello` - specific route to hit
-
-#### Tests
-
-- How do you run tests?
-- Any tests of note?
-- Describe any tests that you did not complete, skipped, etc
-
-#### UML
-
-Link to an image of the UML for your application and response to events
+- working chat app run from the server using http and css
+- 'user is typing' displaying accurately
+- chat log held in local storage that populates the entire chat when a new user joins
 
 #### References
 
